@@ -1,27 +1,18 @@
-// Module dependencies.
-var application_root = __dirname,
-    express = require('express'), //Web framework
-    bodyParser = require('body-parser'), //Parser for reading request body
-    path = require('path'), //Utilities for dealing with file paths
-    mongoose = require('mongoose'); //MongoDB integration
-
-//Express Server configuration
+var express = require('express');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var mongoose = require('mongoose');
 var app = express();
 
-app.configure(function(){
+app.use(express.static(__dirname));
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+app.use(methodOverride());
 
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(app.router);
-	app.use(express.static(path.join(application_root,'')));
-	app.use(express.errorHandler({dumpExceptions:true,showStack:true}));
-
-});
-
-var port = 4711;
-app.listen(port, function() {
-    console.log('Express server listening on port %d in %s mode', port, app.settings.env);
-});
+app.listen(3030);   
+console.log('Listen on 3030');
 
 //MongoDB configuration
 mongoose.connect('mongodb://localhost/library_database');
